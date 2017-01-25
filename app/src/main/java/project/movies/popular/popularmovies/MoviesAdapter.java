@@ -14,10 +14,16 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private List<MovieDataModel> dataModelList;
     private Context context;
+    final private ListItemClickListener mOnClickListener;
 
-    public MoviesAdapter(Context context, List dataModelList) {
+    public MoviesAdapter(Context context, List dataModelList, ListItemClickListener listener) {
         this.context = context;
         this.dataModelList = dataModelList;
+        mOnClickListener = listener;
+    }
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
     }
 
     @Override
@@ -35,7 +41,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         Picasso.with(context).load(dataModelList.get(position).getPoster()).into(holder.imageView);
-        System.out.println(position);
     }
 
     @Override
@@ -43,23 +48,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         return dataModelList == null ? 0 : dataModelList.size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return dataModelList == null ? null : dataModelList.get(position).hashCode();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imageView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
-            System.out.println("called");
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPosition);
         }
     }
 }
