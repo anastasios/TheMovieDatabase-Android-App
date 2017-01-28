@@ -2,6 +2,8 @@ package project.movies.popular.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -53,7 +55,9 @@ public class MainActivityFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, calculateNoOfColumns(mContext));
         mMoviesList.setLayoutManager(gridLayoutManager);
         mMoviesList.setHasFixedSize(true);
-        new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
+        if (isOnline()) {
+            new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
+        } else displayToastMessage(R.string.connectivity_error);
         return view;
     }
 
@@ -66,12 +70,12 @@ public class MainActivityFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.most_popular) {
+        if (id == R.id.most_popular && isOnline()) {
             new MovieQueryTask().execute(MOVIE_URL_POPULAR);
-        }
-        if (id == R.id.top_rated) {
+        } else displayToastMessage(R.string.connectivity_error);
+        if (id == R.id.top_rated && isOnline()) {
             new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
-        }
+        } else displayToastMessage(R.string.connectivity_error);
         return super.onOptionsItemSelected(item);
     }
 
@@ -144,9 +148,7 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(final List<MovieDataModel> dataModelList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (dataModelList == null) {
-                String toastMessage = getString(R.string.connectivity_error);
-                mToast = Toast.makeText(mContext, toastMessage, Toast.LENGTH_LONG);
-                mToast.show();
+                displayToastMessage(R.string.data_download_error);
             } else {
                 super.onPostExecute(dataModelList);
                 mAdapter = new MoviesAdapter(mContext, dataModelList, new MoviesAdapter.ListItemClickListener() {
@@ -177,5 +179,18 @@ public class MainActivityFragment extends Fragment {
         float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         int noOfColumns = (int) (dpWidth / 180);
         return noOfColumns;
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public void displayToastMessage(int IdOfString) {
+        String toastMessage = getString(IdOfString);
+        mToast = Toast.makeText(mContext, toastMessage, Toast.LENGTH_LONG);
+        mToast.show();
     }
 }
