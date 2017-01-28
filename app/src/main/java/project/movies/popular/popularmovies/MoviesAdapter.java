@@ -11,10 +11,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
     private List<MovieDataModel> dataModelList;
     private Context context;
-    final private ListItemClickListener mOnClickListener;
+    final ListItemClickListener mOnClickListener;
 
     public MoviesAdapter(Context context, List dataModelList, ListItemClickListener listener) {
         this.context = context;
@@ -49,11 +52,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView imageView;
+        @BindView(R.id.iv_movie_poster) public ImageView imageView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.iv_movie_poster);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 

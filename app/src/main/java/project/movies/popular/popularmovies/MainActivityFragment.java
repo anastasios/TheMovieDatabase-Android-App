@@ -27,12 +27,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class MainActivityFragment extends Fragment {
     private MoviesAdapter mAdapter;
-    private RecyclerView mMoviesList;
+    @BindView(R.id.rv_movies) RecyclerView mMoviesList;
     private Context mContext;
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.loading_indicator) ProgressBar mLoadingIndicator;
     private Toast mToast;
+    private Unbinder unbinder;
     private static final String API_KEY = "YOUR_API_KEY_HERE";
     static final String MOVIE_URL_POPULAR = String.format("http://api.themoviedb.org/3/movie/popular?api_key=%s", API_KEY);
     static final String MOVIE_URL_TOP_RATED = String.format("http://api.themoviedb.org/3/movie/top_rated?api_key=%s", API_KEY);
@@ -42,12 +47,11 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+        unbinder = ButterKnife.bind(this, view);
         mContext = getActivity();
-        mMoviesList = (RecyclerView) view.findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         mMoviesList.setLayoutManager(gridLayoutManager);
         mMoviesList.setHasFixedSize(true);
-        mLoadingIndicator = (ProgressBar) view.findViewById(R.id.loading_indicator);
         new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
         return view;
     }
@@ -160,5 +164,10 @@ public class MainActivityFragment extends Fragment {
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
