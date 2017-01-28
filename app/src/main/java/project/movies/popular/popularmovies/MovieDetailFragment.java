@@ -11,17 +11,22 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class MovieDetailFragment extends Fragment {
     String mTitle;
     String mOverview;
     String mThumbnail;
     String mReleaseDate;
     String mVoteAverage;
-    TextView mOverviewTv;
-    TextView mReleaseDateTv;
-    ImageView mThumbnailIv;
-    TextView mVoteAverageTv;
-    TextView mTitleTv;
+    @BindView(R.id.tv_overview) TextView mOverviewTv;
+    @BindView(R.id.tv_releaseDate) TextView mReleaseDateTv;
+    @BindView(R.id.iv_thumbnail) ImageView mThumbnailIv;
+    @BindView(R.id.tv_average_vote) TextView mVoteAverageTv;
+    @BindView(R.id.tv_title) TextView mTitleTv;
+    private Unbinder unbinder;
 
     public MovieDetailFragment() {
     }
@@ -31,6 +36,7 @@ public class MovieDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         Intent intentThatStartedThisActivity = getActivity().getIntent();
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        unbinder = ButterKnife.bind(this, view);
         if (intentThatStartedThisActivity.hasExtra("title")) {
             mTitle = intentThatStartedThisActivity.getStringExtra("title");
         }
@@ -46,20 +52,16 @@ public class MovieDetailFragment extends Fragment {
         if (intentThatStartedThisActivity.hasExtra("voteAverage")) {
             mVoteAverage = intentThatStartedThisActivity.getStringExtra("voteAverage");
         }
-        mOverviewTv = (TextView) view.findViewById(R.id.tv_overview);
         mOverviewTv.setText(mOverview);
-
-        mReleaseDateTv = (TextView) view.findViewById(R.id.tv_releaseDate);
         mReleaseDateTv.setText(mReleaseDate);
-
-        mThumbnailIv = (ImageView) view.findViewById(R.id.iv_thumbnail);
         Picasso.with(getActivity()).load(mThumbnail).into(mThumbnailIv);
-
-        mVoteAverageTv = (TextView) view.findViewById(R.id.tv_average_vote);
         mVoteAverageTv.setText(mVoteAverage);
-
-        mTitleTv = (TextView) view.findViewById(R.id.tv_title);
         mTitleTv.setText(mTitle);
         return view;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
