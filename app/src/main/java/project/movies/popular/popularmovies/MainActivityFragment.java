@@ -139,7 +139,7 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(final List<MovieDataModel> dataModelList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (dataModelList == null) {
-                String toastMessage = "Please check your internet connection";
+                String toastMessage = getString(R.string.connectivity_error);
                 mToast = Toast.makeText(mContext, toastMessage, Toast.LENGTH_LONG);
                 mToast.show();
             } else {
