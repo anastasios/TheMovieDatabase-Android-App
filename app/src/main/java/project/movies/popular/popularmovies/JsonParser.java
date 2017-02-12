@@ -30,7 +30,6 @@ public class JsonParser {
             movieDataModel.setVoteAverage(voteAverage);
             movieDataModel.setTitle(title);
             list.add(movieDataModel);
-            System.out.println(poster);
         }
         return list;
     }

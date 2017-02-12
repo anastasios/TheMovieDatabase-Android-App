@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,12 +37,11 @@ import butterknife.Unbinder;
 
 public class MainActivityFragment extends Fragment {
     private MoviesAdapter mAdapter;
-    @BindView(R.id.rv_movies) RecyclerView mMoviesList;
+    @BindView(R.id.rv_movies) RecyclerView mMoviesRecyclerView;
     private Context mContext;
     @BindView(R.id.loading_indicator) ProgressBar mLoadingIndicator;
-    private Toast mToast;
     private Unbinder unbinder;
-    private static final String API_KEY = "YOUR_API_KEY_HERE";
+    private static final String API_KEY = "48b116b4a2db9076fc612beb2e93aa6d";
     static final String MOVIE_URL_POPULAR = String.format("http://api.themoviedb.org/3/movie/popular?api_key=%s", API_KEY);
     static final String MOVIE_URL_TOP_RATED = String.format("http://api.themoviedb.org/3/movie/top_rated?api_key=%s", API_KEY);
 
@@ -53,8 +53,8 @@ public class MainActivityFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         mContext = getActivity();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, calculateNoOfColumns(mContext));
-        mMoviesList.setLayoutManager(gridLayoutManager);
-        mMoviesList.setHasFixedSize(true);
+        mMoviesRecyclerView.setLayoutManager(gridLayoutManager);
+        mMoviesRecyclerView.setHasFixedSize(true);
         if (isOnline()) {
             new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
         } else displayToastMessage(R.string.connectivity_error);
@@ -146,6 +146,7 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final List<MovieDataModel> dataModelList) {
+            Log.d("Network", "onPostExecute");
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (dataModelList == null) {
                 displayToastMessage(R.string.data_download_error);
@@ -163,7 +164,7 @@ public class MainActivityFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
-                mMoviesList.setAdapter(mAdapter);
+                mMoviesRecyclerView.setAdapter(mAdapter);
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
             }
         }
@@ -190,7 +191,6 @@ public class MainActivityFragment extends Fragment {
 
     public void displayToastMessage(int IdOfString) {
         String toastMessage = getString(IdOfString);
-        mToast = Toast.makeText(mContext, toastMessage, Toast.LENGTH_LONG);
-        mToast.show();
+        Toast.makeText(mContext, toastMessage, Toast.LENGTH_LONG).show();
     }
 }
