@@ -6,7 +6,7 @@ public class MovieDataModel {
     }
 
     public void setPoster(String poster) {
-        this.poster = String.format("http://image.tmdb.org/t/p/w780/%s", poster);
+        this.poster = String.format("http://image.tmdb.org/t/p/w185/%s", poster);
     }
 
     String poster;
