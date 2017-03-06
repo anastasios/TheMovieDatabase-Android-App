@@ -1,6 +1,13 @@
 package project.movies.popular.popularmovies;
 
 public class MovieDataModel {
+    String poster;
+    String title;
+    String overview;
+    String releaseDate;
+    String voteAverage;
+    String thumbnail;
+
     public String getPoster() {
         return poster;
     }
@@ -8,8 +15,6 @@ public class MovieDataModel {
     public void setPoster(String poster) {
         this.poster = String.format("http://image.tmdb.org/t/p/w185/%s", poster);
     }
-
-    String poster;
 
     public String getTitle() {
         return title;
@@ -19,8 +24,6 @@ public class MovieDataModel {
         this.title = title;
     }
 
-    String title;
-
     public String getOverview() {
         return overview;
     }
@@ -28,8 +31,6 @@ public class MovieDataModel {
     public void setOverview(String overview) {
         this.overview = overview;
     }
-
-    String overview;
 
     public String getReleaseDate() {
         return releaseDate;
@@ -39,8 +40,6 @@ public class MovieDataModel {
         this.releaseDate = releaseDate;
     }
 
-    String releaseDate;
-
     public String getVoteAverage() {
         return voteAverage;
     }
@@ -49,8 +48,6 @@ public class MovieDataModel {
         this.voteAverage = voteAverage;
     }
 
-    String voteAverage;
-
     public String getThumbnail() {
         return thumbnail;
     }
@@ -58,6 +55,4 @@ public class MovieDataModel {
     public void setThumbnail(String thumbnail) {
         this.thumbnail = String.format("http://image.tmdb.org/t/p/w185/%s", thumbnail);
     }
-
-    String thumbnail;
 }
