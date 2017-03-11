@@ -45,7 +45,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         MovieDataModel dataTest = dataModelList.get(position);
         Picasso.with(context).load(dataTest.getPoster()).into(holder.imageView);
-        //Picasso.with(context).load(dataModelList.get(position).getPoster()).into(holder.imageView);
     }
 
     @Override

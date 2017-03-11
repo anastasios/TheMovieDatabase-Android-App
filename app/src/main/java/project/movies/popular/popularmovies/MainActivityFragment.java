@@ -36,10 +36,12 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MainActivityFragment extends Fragment {
-    private MoviesAdapter mAdapter;
-    @BindView(R.id.rv_movies) RecyclerView mMoviesRecyclerView;
+    static public MoviesAdapter mAdapter;
+    @BindView(R.id.rv_movies)
+    RecyclerView mMoviesRecyclerView;
     private Context mContext;
-    @BindView(R.id.loading_indicator) ProgressBar mLoadingIndicator;
+    @BindView(R.id.loading_indicator)
+    ProgressBar mLoadingIndicator;
     private Unbinder unbinder;
     private static final String API_KEY = "48b116b4a2db9076fc612beb2e93aa6d";
     static final String MOVIE_URL_POPULAR = String.format("http://api.themoviedb.org/3/movie/popular?api_key=%s", API_KEY);
@@ -63,7 +65,7 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_movie_detail, menu);
+        inflater.inflate(R.menu.menu_movie_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -76,7 +78,27 @@ public class MainActivityFragment extends Fragment {
         if (id == R.id.top_rated && isOnline()) {
             new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
         } else displayToastMessage(R.string.connectivity_error);
+        if (id == R.id.my_favorite_list && isOnline()) {
+            final List<MovieDataModel> movieDataModelList = new DatabseUtils().generateListFromDB(mContext);
+            mAdapter = createClickableMovieAdapter(mContext, movieDataModelList);
+            mMoviesRecyclerView.setAdapter(mAdapter);
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private MoviesAdapter createClickableMovieAdapter(final Context context, final List<MovieDataModel> movieDataModelList) {
+        return new MoviesAdapter(mContext, movieDataModelList, new MoviesAdapter.ListItemClickListener() {
+            @Override
+            public void onListItemClick(int clickedItemIndex) {
+                Intent intent = new Intent(context, MovieDetail.class);
+                intent.putExtra("title", movieDataModelList.get(clickedItemIndex).getTitle());
+                intent.putExtra("overview", movieDataModelList.get(clickedItemIndex).getOverview());
+                intent.putExtra("poster", movieDataModelList.get(clickedItemIndex).getPoster());
+                intent.putExtra("releaseDate", movieDataModelList.get(clickedItemIndex).getReleaseDate());
+                intent.putExtra("voteAverage", movieDataModelList.get(clickedItemIndex).getVoteAverage());
+                startActivity(intent);
+            }
+        });
     }
 
     class MovieQueryTask extends AsyncTask<String, Void, List<MovieDataModel>> {
@@ -158,7 +180,7 @@ public class MainActivityFragment extends Fragment {
                         Intent intent = new Intent(mContext, MovieDetail.class);
                         intent.putExtra("title", dataModelList.get(clickedItemIndex).getTitle());
                         intent.putExtra("overview", dataModelList.get(clickedItemIndex).getOverview());
-                        intent.putExtra("thumbnail", dataModelList.get(clickedItemIndex).getThumbnail());
+                        intent.putExtra("poster", dataModelList.get(clickedItemIndex).getPoster());
                         intent.putExtra("releaseDate", dataModelList.get(clickedItemIndex).getReleaseDate());
                         intent.putExtra("voteAverage", dataModelList.get(clickedItemIndex).getVoteAverage());
                         startActivity(intent);
@@ -170,7 +192,8 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }

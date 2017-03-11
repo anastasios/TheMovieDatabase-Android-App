@@ -1,12 +1,11 @@
 package project.movies.popular.popularmovies;
 
 public class MovieDataModel {
-    String poster;
-    String title;
-    String overview;
-    String releaseDate;
-    String voteAverage;
-    String thumbnail;
+    private String poster;
+    private String title;
+    private String overview;
+    private String releaseDate;
+    private String voteAverage;
 
     public String getPoster() {
         return poster;
@@ -14,6 +13,10 @@ public class MovieDataModel {
 
     public void setPoster(String poster) {
         this.poster = String.format("http://image.tmdb.org/t/p/w185/%s", poster);
+    }
+
+    public void setPosterForDB(String poster) {
+        this.poster = poster;
     }
 
     public String getTitle() {
@@ -46,13 +49,5 @@ public class MovieDataModel {
 
     public void setVoteAverage(String voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = String.format("http://image.tmdb.org/t/p/w185/%s", thumbnail);
     }
 }

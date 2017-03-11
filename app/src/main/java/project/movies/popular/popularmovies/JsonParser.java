@@ -24,7 +24,7 @@ public class JsonParser {
 
             MovieDataModel movieDataModel = new MovieDataModel();
             movieDataModel.setPoster(poster);
-            movieDataModel.setThumbnail(poster);
+            movieDataModel.setPoster(poster);
             movieDataModel.setOverview(overview);
             movieDataModel.setReleaseDate(releaseDate);
             movieDataModel.setVoteAverage(voteAverage);

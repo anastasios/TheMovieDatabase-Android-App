@@ -2,6 +2,7 @@
     <string name="app_name">Pop Movies</string>
     <string name="most_popular">Sort by popularity</string>
     <string name="top_rated">Sort by rating</string>
+    <string name="favorite_list">Sort by favorite</string>
     <string name="title_activity_movie_detail">MovieDetail</string>
     <string name="placeholder">placeholder</string>
     <string name="connectivity_error">Please check your internet connection!</string>
