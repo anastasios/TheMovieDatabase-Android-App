@@ -12,5 +12,6 @@ public class DatabaseContract {
         public static final String MOVIE_OVERVIEW = "overview";
         public static final String MOVIE_RELEASE_DATE = "releaseDate";
         public static final String MOVIE_VOTE_AVERAGE = "movie_average";
+        public static final String MOVIE_ID = "movie_id";
     }
 }

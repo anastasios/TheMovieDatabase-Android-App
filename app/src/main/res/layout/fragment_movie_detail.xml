@@ -77,4 +77,14 @@
         android:layout_below="@+id/iv_thumbnail"
         android:layout_alignLeft="@+id/iv_thumbnail"
         android:layout_alignStart="@+id/iv_thumbnail"/>
+
+    <Button
+        android:text="@string/play_trailer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_overview"
+        android:layout_alignLeft="@+id/tv_overview"
+        android:layout_alignStart="@+id/tv_overview"
+        android:layout_marginTop="47dp"
+        android:id="@+id/movie_trailer"/>
 </RelativeLayout>

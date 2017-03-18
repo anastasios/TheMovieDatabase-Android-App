@@ -7,4 +7,5 @@
     <string name="placeholder">placeholder</string>
     <string name="connectivity_error">Please check your internet connection!</string>
     <string name="data_download_error">An error occurred while downloading data</string>
+    <string name="play_trailer">Play trailer</string>
 </resources>

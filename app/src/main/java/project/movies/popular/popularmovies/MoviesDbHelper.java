@@ -22,6 +22,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 MoviesEntry.MOVIE_POSTER + " TEXT NOT NULL," +
                 MoviesEntry.MOVIE_OVERVIEW + " TEXT NOT NULL," +
                 MoviesEntry.MOVIE_RELEASE_DATE + " TEXT NOT NULL," +
+                MoviesEntry.MOVIE_ID + " TEXT NOT NULL," +
                 MoviesEntry.MOVIE_VOTE_AVERAGE + " TEXT NOT NULL" + " );";
         db.execSQL(SQL_CREATE_WAITLIST_TABLE);
     }

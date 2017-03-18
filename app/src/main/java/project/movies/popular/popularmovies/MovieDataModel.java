@@ -6,6 +6,15 @@ public class MovieDataModel {
     private String overview;
     private String releaseDate;
     private String voteAverage;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getPoster() {
         return poster;

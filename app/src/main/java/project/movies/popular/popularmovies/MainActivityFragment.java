@@ -96,6 +96,7 @@ public class MainActivityFragment extends Fragment {
                 intent.putExtra("poster", movieDataModelList.get(clickedItemIndex).getPoster());
                 intent.putExtra("releaseDate", movieDataModelList.get(clickedItemIndex).getReleaseDate());
                 intent.putExtra("voteAverage", movieDataModelList.get(clickedItemIndex).getVoteAverage());
+                intent.putExtra("id", movieDataModelList.get(clickedItemIndex).getId());
                 startActivity(intent);
             }
         });
@@ -183,6 +184,7 @@ public class MainActivityFragment extends Fragment {
                         intent.putExtra("poster", dataModelList.get(clickedItemIndex).getPoster());
                         intent.putExtra("releaseDate", dataModelList.get(clickedItemIndex).getReleaseDate());
                         intent.putExtra("voteAverage", dataModelList.get(clickedItemIndex).getVoteAverage());
+                        intent.putExtra("id", dataModelList.get(clickedItemIndex).getId());
                         startActivity(intent);
                     }
                 });

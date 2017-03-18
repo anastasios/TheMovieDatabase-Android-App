@@ -21,6 +21,7 @@ public class DatabseUtils {
                 String columnOverview = c.getString(c.getColumnIndex(DatabaseContract.MoviesEntry.MOVIE_OVERVIEW));
                 String columnReleaseDate = c.getString(c.getColumnIndex(DatabaseContract.MoviesEntry.MOVIE_RELEASE_DATE));
                 String columnVoteAverage = c.getString(c.getColumnIndex(DatabaseContract.MoviesEntry.MOVIE_VOTE_AVERAGE));
+                String columnId = c.getString(c.getColumnIndex(DatabaseContract.MoviesEntry.MOVIE_ID));
 
                 MovieDataModel movieDataModel = new MovieDataModel();
                 movieDataModel.setTitle(columnTitle);
@@ -28,6 +29,7 @@ public class DatabseUtils {
                 movieDataModel.setOverview(columnOverview);
                 movieDataModel.setReleaseDate(columnReleaseDate);
                 movieDataModel.setVoteAverage(columnVoteAverage);
+                movieDataModel.setId(columnId);
                 moviesList.add(movieDataModel);
             } while (c.moveToNext());
         }

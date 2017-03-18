@@ -21,6 +21,7 @@ public class JsonParser {
             String voteAverage = movie.getString("vote_average");
             String overview = movie.getString("overview");
             String title = movie.getString("title");
+            String id = movie.getString("id");
 
             MovieDataModel movieDataModel = new MovieDataModel();
             movieDataModel.setPoster(poster);
@@ -29,8 +30,19 @@ public class JsonParser {
             movieDataModel.setReleaseDate(releaseDate);
             movieDataModel.setVoteAverage(voteAverage);
             movieDataModel.setTitle(title);
+            movieDataModel.setId(id);
             list.add(movieDataModel);
         }
         return list;
     }
+
+    public static String jsonParserMovieTrailer(String inputJsonMovieTrailer) throws JSONException {
+        JSONObject jsonObject = new JSONObject(inputJsonMovieTrailer);
+        JSONArray results = jsonObject.getJSONArray("results");
+        JSONObject trailerDetails = results.getJSONObject(0);
+        String trailerKey = trailerDetails.getString("key");
+        return trailerKey;
+    }
+
+
 }

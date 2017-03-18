@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,11 +14,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +35,8 @@ public class MovieDetailFragment extends Fragment {
     String mPoster;
     String mReleaseDate;
     String mVoteAverage;
+    String mId;
+    String mTrailerKey;
     @BindView(R.id.tv_overview)
     TextView mOverviewTv;
     @BindView(R.id.tv_releaseDate)
@@ -38,6 +47,8 @@ public class MovieDetailFragment extends Fragment {
     TextView mVoteAverageTv;
     @BindView(R.id.tv_title)
     TextView mTitleTv;
+    @BindView(R.id.movie_trailer)
+    Button mTrailerButton;
     private Unbinder unbinder;
     private SQLiteDatabase db;
 
@@ -70,13 +81,24 @@ public class MovieDetailFragment extends Fragment {
         if (intentThatStartedThisActivity.hasExtra("voteAverage")) {
             mVoteAverage = intentThatStartedThisActivity.getStringExtra("voteAverage");
         }
+        if (intentThatStartedThisActivity.hasExtra("id")) {
+            mId = intentThatStartedThisActivity.getStringExtra("id");
+        }
+        System.out.println(mId);
         mOverviewTv.setText(mOverview);
         mReleaseDateTv.setText(mReleaseDate);
         Picasso.with(getActivity()).load(mPoster).into(mPosterIv);
         mVoteAverageTv.setText(mVoteAverage + "/10");
         mTitleTv.setText(mTitle);
+        new MovieDetails().execute();
 
-        //addMovieToDb();
+        mTrailerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + mTrailerKey)));
+            }
+        });
+
         Cursor c = db.rawQuery("SELECT * FROM movies ", null);
         if (c.moveToFirst()) {
             do {
@@ -122,6 +144,7 @@ public class MovieDetailFragment extends Fragment {
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_OVERVIEW, mOverview);
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_RELEASE_DATE, mReleaseDate);
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_VOTE_AVERAGE, mVoteAverage);
+        contentValues.put(DatabaseContract.MoviesEntry.MOVIE_ID, mId);
         return db.insert(DatabaseContract.MoviesEntry.TABLE_NAME, null, contentValues);
     }
 
@@ -156,4 +179,26 @@ public class MovieDetailFragment extends Fragment {
         MainActivityFragment.mAdapter.notifyDataSetChanged();
         return super.onOptionsItemSelected(item);
     }
+
+    class MovieDetails extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String JsonResponseString = new NetworkUtils().run("http://api.themoviedb.org/3/movie/" + mId + "/videos?api_key=48b116b4a2db9076fc612beb2e93aa6d");
+            return JsonResponseString;
+        }
+
+        @Override
+        protected void onPostExecute(String input) {
+            super.onPostExecute(input);
+            System.out.println(input);
+            try {
+                mTrailerKey = JsonParser.jsonParserMovieTrailer(input);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println(mTrailerKey);
+        }
+    }
+
 }
