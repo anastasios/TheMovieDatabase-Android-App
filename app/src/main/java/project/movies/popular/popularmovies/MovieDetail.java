@@ -37,7 +37,7 @@ public class MovieDetail extends AppCompatActivity {
             if (i == 0)
                 return new MovieDetailFragment();
             else
-                return new MovieDetailFragment();
+                return new MovieReviewsFragment();
         }
 
         @Override

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class JsonParser {
     static List<MovieDataModel> list;
+    static List<MovieReviewsDataModel> movieReviewsDataModels;
 
     public static List<MovieDataModel> jsonParser(String inputJson) throws JSONException {
         list = new ArrayList<>();
@@ -44,5 +45,18 @@ public class JsonParser {
         return trailerKey;
     }
 
+    public static List<MovieReviewsDataModel> jsonParserMovieReviews(String inputJsonMovieReviews) throws JSONException {
+        movieReviewsDataModels = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(inputJsonMovieReviews);
+        JSONArray results = jsonObject.getJSONArray("results");
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject movie = results.getJSONObject(i);
+            String movieReview = movie.getString("content");
 
+            MovieReviewsDataModel movieReviewsDataModel = new MovieReviewsDataModel();
+            movieReviewsDataModel.setContent(movieReview);
+            movieReviewsDataModels.add(movieReviewsDataModel);
+        }
+        return movieReviewsDataModels;
+    }
 }

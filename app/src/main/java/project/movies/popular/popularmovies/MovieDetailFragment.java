@@ -35,7 +35,7 @@ public class MovieDetailFragment extends Fragment {
     String mPoster;
     String mReleaseDate;
     String mVoteAverage;
-    String mId;
+    static String mId;
     String mTrailerKey;
     @BindView(R.id.tv_overview)
     TextView mOverviewTv;
@@ -191,14 +191,11 @@ public class MovieDetailFragment extends Fragment {
         @Override
         protected void onPostExecute(String input) {
             super.onPostExecute(input);
-            System.out.println(input);
             try {
                 mTrailerKey = JsonParser.jsonParserMovieTrailer(input);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println(mTrailerKey);
         }
     }
-
 }
