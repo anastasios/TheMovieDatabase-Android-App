@@ -43,7 +43,7 @@ public class MainActivityFragment extends Fragment {
     @BindView(R.id.loading_indicator)
     ProgressBar mLoadingIndicator;
     private Unbinder unbinder;
-    private static final String API_KEY = "48b116b4a2db9076fc612beb2e93aa6d";
+    static final String API_KEY = "ENTER_YOUR_KEY_HERE";
     static final String MOVIE_URL_POPULAR = String.format("http://api.themoviedb.org/3/movie/popular?api_key=%s", API_KEY);
     static final String MOVIE_URL_TOP_RATED = String.format("http://api.themoviedb.org/3/movie/top_rated?api_key=%s", API_KEY);
 

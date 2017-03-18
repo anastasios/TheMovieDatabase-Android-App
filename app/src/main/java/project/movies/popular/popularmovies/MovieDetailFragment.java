@@ -184,7 +184,8 @@ public class MovieDetailFragment extends Fragment {
 
         @Override
         protected String doInBackground(Void... params) {
-            String JsonResponseString = new NetworkUtils().run("http://api.themoviedb.org/3/movie/" + mId + "/videos?api_key=48b116b4a2db9076fc612beb2e93aa6d");
+            String JsonResponseString = new NetworkUtils().run("http://api.themoviedb.org/3/movie/" + mId + "/videos?api_key=" +
+                    MainActivityFragment.API_KEY);
             return JsonResponseString;
         }
 

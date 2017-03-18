@@ -50,7 +50,7 @@ public class MovieReviewsFragment extends Fragment {
         @Override
         protected List<MovieReviewsDataModel> doInBackground(Void... params) {
             String jsonResponseString = new NetworkUtils().run("http://api.themoviedb.org/3/movie/" + MovieDetailFragment.mId +
-                    "/reviews?api_key=48b116b4a2db9076fc612beb2e93aa6d");
+                    "/reviews?api_key=" + MainActivityFragment.API_KEY);
             List<MovieReviewsDataModel> movieReviewsDataModels = new ArrayList<>();
             try {
                 movieReviewsDataModels = JsonParser.jsonParserMovieReviews(jsonResponseString);
