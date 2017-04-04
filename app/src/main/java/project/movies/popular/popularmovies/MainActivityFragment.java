@@ -43,7 +43,7 @@ public class MainActivityFragment extends Fragment {
     @BindView(R.id.loading_indicator)
     ProgressBar mLoadingIndicator;
     private Unbinder unbinder;
-    static final String API_KEY = "48b116b4a2db9076fc612beb2e93aa6d";
+    static final String API_KEY = "YOUR_KEY_HERE";
     static final String MOVIE_URL_POPULAR = String.format("http://api.themoviedb.org/3/movie/popular?api_key=%s", API_KEY);
     static final String MOVIE_URL_TOP_RATED = String.format("http://api.themoviedb.org/3/movie/top_rated?api_key=%s", API_KEY);
 
@@ -57,9 +57,7 @@ public class MainActivityFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, calculateNoOfColumns(mContext));
         mMoviesRecyclerView.setLayoutManager(gridLayoutManager);
         mMoviesRecyclerView.setHasFixedSize(true);
-        if (isOnline()) {
-            new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
-        } else displayToastMessage(R.string.connectivity_error);
+        new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
         return view;
     }
 
@@ -72,14 +70,14 @@ public class MainActivityFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.most_popular && isOnline()) {
+        if (id == R.id.most_popular) {
             new MovieQueryTask().execute(MOVIE_URL_POPULAR);
         } else displayToastMessage(R.string.connectivity_error);
-        if (id == R.id.top_rated && isOnline()) {
+        if (id == R.id.top_rated) {
             new MovieQueryTask().execute(MOVIE_URL_TOP_RATED);
         } else displayToastMessage(R.string.connectivity_error);
         if (id == R.id.my_favorite_list) {
-            final List<MovieDataModel> movieDataModelList = new DatabseUtils().generateListFromDB(mContext);
+            List<MovieDataModel> movieDataModelList = new DatabseUtils().generateListFromDB(mContext);
             mAdapter = createClickableMovieAdapter(mContext, movieDataModelList);
             mMoviesRecyclerView.setAdapter(mAdapter);
         }
@@ -169,7 +167,6 @@ public class MainActivityFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final List<MovieDataModel> dataModelList) {
-            Log.d("Network", "onPostExecute");
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (dataModelList == null) {
                 displayToastMessage(R.string.data_download_error);
@@ -217,5 +214,15 @@ public class MainActivityFragment extends Fragment {
     public void displayToastMessage(int IdOfString) {
         String toastMessage = getString(IdOfString);
         Toast.makeText(mContext, toastMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdapter != null && mMoviesRecyclerView != null) {
+            final List<MovieDataModel> movieDataModelList = new DatabseUtils().generateListFromDB(mContext);
+            mAdapter = createClickableMovieAdapter(mContext, movieDataModelList);
+            mMoviesRecyclerView.setAdapter(mAdapter);
+        }
     }
 }

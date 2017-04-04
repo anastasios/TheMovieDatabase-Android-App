@@ -13,7 +13,12 @@ public class DatabseUtils {
         List<MovieDataModel> moviesList = new ArrayList<>();
         MoviesDbHelper moviesDbHelper = new MoviesDbHelper(context);
         SQLiteDatabase db = moviesDbHelper.getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + DatabaseContract.MoviesEntry.TABLE_NAME, null);
+        Cursor c = context.getContentResolver().query(DatabaseContract.MoviesEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+             //   db.rawQuery("SELECT * FROM " + DatabaseContract.MoviesEntry.TABLE_NAME, null);
         if (c.moveToFirst()) {
             do {
                 String columnTitle = c.getString(c.getColumnIndex(DatabaseContract.MoviesEntry.MOVIE_TITLE));

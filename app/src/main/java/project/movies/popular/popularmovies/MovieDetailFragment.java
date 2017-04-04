@@ -23,8 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -137,7 +135,7 @@ public class MovieDetailFragment extends Fragment {
         db.close();
     }
 
-    private long addMovieToDb() {
+    private void addMovieToDb() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_TITLE, mTitle);
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_POSTER, mPoster);
@@ -145,12 +143,18 @@ public class MovieDetailFragment extends Fragment {
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_RELEASE_DATE, mReleaseDate);
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_VOTE_AVERAGE, mVoteAverage);
         contentValues.put(DatabaseContract.MoviesEntry.MOVIE_ID, mId);
-        return db.insert(DatabaseContract.MoviesEntry.TABLE_NAME, null, contentValues);
+        getContext().getContentResolver().insert(DatabaseContract.MoviesEntry.CONTENT_URI, contentValues);
+       /* if (uri != null) {
+            Toast.makeText(getContext(), uri.toString(), Toast.LENGTH_LONG).show();
+        }*/
+        //return db.insert(DatabaseContract.MoviesEntry.TABLE_NAME, null, contentValues);
     }
 
     private void removeMovieFromDb() {
         String title = String.format("\"%s\"", mTitle);
-        db.delete(DatabaseContract.MoviesEntry.TABLE_NAME, DatabaseContract.MoviesEntry.MOVIE_TITLE + "=" + title, null);
+        String deleteQuery = DatabaseContract.MoviesEntry.MOVIE_TITLE + "=" + title;
+        getContext().getContentResolver().delete(DatabaseContract.MoviesEntry.CONTENT_URI, deleteQuery, null);
+        //db.delete(DatabaseContract.MoviesEntry.TABLE_NAME, DatabaseContract.MoviesEntry.MOVIE_TITLE + "=" + title, null);
     }
 
     @Override
